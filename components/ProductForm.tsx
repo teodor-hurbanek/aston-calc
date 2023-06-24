@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Box, Button, Checkbox, Group, List, NumberInput, Radio, Select, Text, ThemeIcon } from '@mantine/core'
 import { DatePickerInput } from '@mantine/dates'
 import { useForm } from '@mantine/form'
@@ -6,13 +6,6 @@ import { variants, getTomorrowDate } from '../utils/helpers'
 import { useData } from '../hooks/useData'
 
 const ProductForm = () => {
-  //   const [variant, setVariant] = useState<string | null>(null)
-  //   const [startDate, setStartDate] = useState<Date | null>(null)
-  //   const [endDate, setEndDate] = useState<Date | null>(null)
-  //   const [productPackage, setProdcutPackage] = useState<string | undefined>(undefined)
-  //   const [storno, setStorno] = useState(false)
-  //   const [sportActivities, setSportActivities] = useState(false)
-  //   const [customersCount, setCustomersCount] = useState<number | ''>(1)
   const { setData } = useData()
 
   const form = useForm({
@@ -29,7 +22,7 @@ const ProductForm = () => {
     validate: {
       variant: value => (value.length === 0 ? 'Variant poistenia je povinné pole' : null),
       startDate: value => (!value ? 'Začiatok poistenia je povinné pole' : null),
-      //   endDate: value => (!value ? 'Koniec poistenia je povinné pole' : null),
+      // TODO: cannot be sooner than startDate  endDate: value => (!value ? 'Koniec poistenia je povinné pole' : null),
       productPackage: value => (value.length === 0 ? 'Koniec poistenia je povinné pole' : null),
       customersCount: value => (value < 1 || value > 3 ? 'Počet osôb musí byť od 1 do 3' : null),
     },
@@ -40,8 +33,6 @@ const ProductForm = () => {
     setData({ ...form.values })
     // form.reset()
   }
-
-  //   console.log(typeof form.getInputProps('startDate'))
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -57,8 +48,6 @@ const ProductForm = () => {
             label={'Variant poistenia'}
             placeholder={'Vyberte jednu z možností'}
             data={variants}
-            // value={variant}
-            // onChange={setVariant}
             withAsterisk
             {...form.getInputProps('variant')}
           />
@@ -73,8 +62,6 @@ const ProductForm = () => {
           <DatePickerInput
             label={'Začiatok poistenia'}
             placeholder={'Vyberte začiatok poistenia'}
-            // value={startDate}
-            // onChange={setStartDate}
             minDate={new Date()}
             withAsterisk
             sx={{ marginBottom: '.5rem' }}
@@ -84,8 +71,6 @@ const ProductForm = () => {
             <DatePickerInput
               label={'Koniec poistenia'}
               placeholder={'Vyberte koniec poistenia'}
-              // value={endDate}
-              // onChange={setEndDate}
               minDate={getTomorrowDate()}
               withAsterisk
               {...form.getInputProps('endDate')}
@@ -102,8 +87,6 @@ const ProductForm = () => {
           <Radio.Group
             name="productProductPackage"
             label="Vyberte si balík"
-            // value={productPackage}
-            // onChange={setProductPackage}
             withAsterisk
             {...form.getInputProps('productPackage')}
           >
@@ -183,13 +166,7 @@ const ProductForm = () => {
             })}
           >
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem' }}>
-              <Checkbox
-                label={'Storno cesty'}
-                //   checked={storno}
-                //   onChange={e => setStorno(e.target.checked)}
-                sx={{ marginBottom: '.5rem' }}
-                {...form.getInputProps('storno')}
-              />
+              <Checkbox label={'Storno cesty'} sx={{ marginBottom: '.5rem' }} {...form.getInputProps('storno')} />
               {form.getInputProps('variant').value === 'short' ? (
                 <Text align="center" size={'md'} c={'blue'}>
                   50 % prirážka k sadzbe
@@ -202,12 +179,7 @@ const ProductForm = () => {
             </div>
 
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem' }}>
-              <Checkbox
-                label={'Športové aktivity'}
-                //   checked={sportActivities}
-                //   onChange={e => setSportActivities(e.target.checked)}
-                {...form.getInputProps('sportActivities')}
-              />
+              <Checkbox label={'Športové aktivity'} {...form.getInputProps('sportActivities')} />
               {form.getInputProps('variant').value === 'short' ? (
                 <Text align="center" size={'md'} c={'blue'}>
                   30 % prirážka k sadzbe
@@ -230,8 +202,6 @@ const ProductForm = () => {
           <NumberInput
             label={'Počet osôb'}
             type={'number'}
-            // value={customersCount}
-            // onChange={setCustomersCount}
             min={1}
             max={3}
             withAsterisk
